@@ -21,7 +21,10 @@ class PgsqlAdapter extends Connection
 
 	public function get_sequence_name($table, $column_name)
 	{
-		return "{$table}_{$column_name}_seq";
+        $table       = explode('.', str_replace('"', '', $table));
+        $tableName   = array_pop($table);
+        $tableSchema = array_pop($table);
+		return "{$tableSchema}.\"{$tableName}_{$column_name}_seq\"";
 	}
 
 	public function next_sequence_value($sequence_name)
@@ -36,6 +39,9 @@ class PgsqlAdapter extends Connection
 
 	public function query_column_info($table)
 	{
+        $table = explode('.', str_replace('"', '', $table));
+        $table = array_pop($table);
+
 		$sql = <<<SQL
 SELECT
       a.attname AS field,
