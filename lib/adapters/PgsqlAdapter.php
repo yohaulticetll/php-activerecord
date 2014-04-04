@@ -21,10 +21,15 @@ class PgsqlAdapter extends Connection
 
 	public function get_sequence_name($table, $column_name)
 	{
-        $table       = explode('.', str_replace('"', '', $table));
-        $tableName   = array_pop($table);
-        $tableSchema = array_pop($table);
-		return "{$tableSchema}.\"{$tableName}_{$column_name}_seq\"";
+        	$table       = explode('.', str_replace('"', '', $table));
+        	$tableName   = array_pop($table);
+        	$tableSchema = array_pop($table);
+
+        	if (empty($tableSchema)) {
+            		return "\"{$tableName}_{$column_name}_seq\"";
+        	}
+
+        	return "{$tableSchema}.\"{$tableName}_{$column_name}_seq\"";
 	}
 
 	public function next_sequence_value($sequence_name)
