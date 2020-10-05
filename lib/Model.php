@@ -1585,7 +1585,7 @@ class Model
 		$list = static::table()->find($options);
 		$results = count($list);
 
-		if ($results != ($expected = count($values)))
+		if ($results != ($expected = count((array)$values)))
 		{
 			$class = get_called_class();
 
